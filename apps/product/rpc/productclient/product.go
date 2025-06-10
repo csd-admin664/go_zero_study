@@ -14,12 +14,15 @@ import (
 )
 
 type (
-	ProductItem     = product.ProductItem
-	ProductRequest  = product.ProductRequest
-	ProductResponse = product.ProductResponse
+	ProductInfoRequest  = product.ProductInfoRequest
+	ProductInfoResponse = product.ProductInfoResponse
+	ProductItem         = product.ProductItem
+	ProductRequest      = product.ProductRequest
+	ProductResponse     = product.ProductResponse
 
 	Product interface {
 		Products(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*ProductResponse, error)
+		ProductInfo(ctx context.Context, in *ProductInfoRequest, opts ...grpc.CallOption) (*ProductItem, error)
 	}
 
 	defaultProduct struct {
@@ -36,4 +39,9 @@ func NewProduct(cli zrpc.Client) Product {
 func (m *defaultProduct) Products(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*ProductResponse, error) {
 	client := product.NewProductClient(m.cli.Conn())
 	return client.Products(ctx, in, opts...)
+}
+
+func (m *defaultProduct) ProductInfo(ctx context.Context, in *ProductInfoRequest, opts ...grpc.CallOption) (*ProductItem, error) {
+	client := product.NewProductClient(m.cli.Conn())
+	return client.ProductInfo(ctx, in, opts...)
 }

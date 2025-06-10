@@ -27,3 +27,8 @@ func (s *ProductServer) Products(ctx context.Context, in *product.ProductRequest
 	l := logic.NewProductsLogic(ctx, s.svcCtx)
 	return l.Products(in)
 }
+
+func (s *ProductServer) ProductInfo(ctx context.Context, in *product.ProductInfoRequest) (*product.ProductItem, error) {
+	l := logic.NewProductInfoLogic(ctx, s.svcCtx)
+	return l.ProductInfo(in)
+}

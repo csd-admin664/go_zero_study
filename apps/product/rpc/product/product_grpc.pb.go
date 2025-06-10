@@ -19,7 +19,8 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Product_Products_FullMethodName = "/product.Product/Products"
+	Product_Products_FullMethodName    = "/product.Product/Products"
+	Product_ProductInfo_FullMethodName = "/product.Product/ProductInfo"
 )
 
 // ProductClient is the client API for Product service.
@@ -27,6 +28,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type ProductClient interface {
 	Products(ctx context.Context, in *ProductRequest, opts ...grpc.CallOption) (*ProductResponse, error)
+	ProductInfo(ctx context.Context, in *ProductInfoRequest, opts ...grpc.CallOption) (*ProductItem, error)
 }
 
 type productClient struct {
@@ -47,11 +49,22 @@ func (c *productClient) Products(ctx context.Context, in *ProductRequest, opts .
 	return out, nil
 }
 
+func (c *productClient) ProductInfo(ctx context.Context, in *ProductInfoRequest, opts ...grpc.CallOption) (*ProductItem, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ProductItem)
+	err := c.cc.Invoke(ctx, Product_ProductInfo_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ProductServer is the server API for Product service.
 // All implementations must embed UnimplementedProductServer
 // for forward compatibility.
 type ProductServer interface {
 	Products(context.Context, *ProductRequest) (*ProductResponse, error)
+	ProductInfo(context.Context, *ProductInfoRequest) (*ProductItem, error)
 	mustEmbedUnimplementedProductServer()
 }
 
@@ -64,6 +77,9 @@ type UnimplementedProductServer struct{}
 
 func (UnimplementedProductServer) Products(context.Context, *ProductRequest) (*ProductResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Products not implemented")
+}
+func (UnimplementedProductServer) ProductInfo(context.Context, *ProductInfoRequest) (*ProductItem, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method ProductInfo not implemented")
 }
 func (UnimplementedProductServer) mustEmbedUnimplementedProductServer() {}
 func (UnimplementedProductServer) testEmbeddedByValue()                 {}
@@ -104,6 +120,24 @@ func _Product_Products_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Product_ProductInfo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ProductInfoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ProductServer).ProductInfo(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Product_ProductInfo_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ProductServer).ProductInfo(ctx, req.(*ProductInfoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Product_ServiceDesc is the grpc.ServiceDesc for Product service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -114,6 +148,10 @@ var Product_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Products",
 			Handler:    _Product_Products_Handler,
+		},
+		{
+			MethodName: "ProductInfo",
+			Handler:    _Product_ProductInfo_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
