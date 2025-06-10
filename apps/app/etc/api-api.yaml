@@ -6,6 +6,7 @@ OrderRPC:
     Hosts:
       - 127.0.0.1:2379
     Key: order.rpc
+    NonBlock: false
 ProductRPC:
   Etcd:
     Hosts:

@@ -34,10 +34,9 @@ func (l *ProductDetailLogic) ProductDetail(req *types.ProductDetailRequest) (res
 		Product: &types.Product{
 			Name:        info.Name,
 			Description: info.Description,
-			Price:       info.Price,
-			Stock:       info.Stock,
-			Status:      info.Status,
-			CreateTime:  info.CreateTime,
+			Price:       info.Price, Stock: info.Stock,
+			Status:     info.Status,
+			CreateTime: info.CreateTime,
 		},
 		Comments: []*types.Comment{
 			{
