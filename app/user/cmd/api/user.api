@@ -1,0 +1,52 @@
+syntax = "V1"
+
+info (
+	title:  "用户中心"
+	desc:   "用户中心"
+	author: "type author here"
+)
+
+type User {
+	Id    int    `json:"id"`
+	Name  string `json:"name"`
+	Age   int    `json:"age"`
+	Email string `json:"email"`
+	Phone string `json:"phone"`
+	Info  string `json:"info"`
+}
+
+type (
+	UserRegisterReq {
+		Phone    string `json:"phone"`
+		Password string `json:"password"`
+	}
+	UserRegisterRes {
+		Accesstonken      string `json:"accesstonken"`
+		Expire            int64  `json:"expire"`
+		RefreshtokenAfter int64  `json:"refreshtokenAfter"`
+	}
+	UserLoginReq {
+		Phone    string `json:"phone"`
+		Password string `json:"password"`
+	}
+	UserLoginRes {
+		Accesstonken      string `json:"accesstonken"`
+		Expire            int64  `json:"expire"`
+		RefreshtokenAfter int64  `json:"refreshtokenAfter"`
+	}
+)
+
+@server (
+	prefix: usercenter/v1
+	group:  user
+)
+service user {
+	@doc "register"
+	@handler Register
+	post /user/register (UserRegisterReq) returns (UserRegisterRes)
+
+	@doc "login"
+	@handler Login
+	post /user/login (UserLoginReq) returns (UserLoginRes)
+}
+
