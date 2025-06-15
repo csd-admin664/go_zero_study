@@ -12,6 +12,7 @@ import (
 	"math/big"
 )
 
+// ETH 转账
 func main() {
 	client, err := ethclient.Dial("https://ethereum-sepolia-rpc.publicnode.com")
 	if err != nil {

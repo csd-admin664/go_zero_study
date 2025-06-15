@@ -10,6 +10,10 @@ import (
 	"math/big"
 )
 
+/**
+查询交易
+*/
+
 func main() {
 	client, err := ethclient.Dial("https://ethereum.publicnode.com/?sepolia")
 	if err != nil {

@@ -8,6 +8,10 @@ import (
 	"log"
 )
 
+/*
+*
+订阅区块
+*/
 func main() {
 	client, er := ethclient.Dial("https://ethereum-sepolia-rpc.publicnode.com")
 	if er != nil {
