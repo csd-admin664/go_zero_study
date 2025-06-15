@@ -10,10 +10,11 @@ import (
 
 /*
 *
-订阅区块
+
+	监听新的区块
 */
 func main() {
-	client, er := ethclient.Dial("https://ethereum-sepolia-rpc.publicnode.com")
+	client, er := ethclient.Dial("wss://mainnet.infura.io/ws/v3/YOUR_INFURA_KEY")
 	if er != nil {
 		log.Fatal("初始化客户端失败:", er)
 	}
